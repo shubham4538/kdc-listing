@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.add-product-headers {
+  @apply text-lg border-b p-2 border-gray-400;
+}
+
+.app-product-section {
+  @apply flex flex-col border border-gray-300;
+}
+
+.add-product-items {
+  @apply flex flex-col overflow-auto gap-1 p-2;
+}
+
+.add-product-item {
+  @apply flex justify-between cursor-pointer p-2;
+}
