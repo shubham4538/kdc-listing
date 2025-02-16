@@ -14,6 +14,7 @@ app.get("/getdata", async (req, res) => {
   try {
     const db = await connectDB();
     const data = await db.collection("products").find({}).toArray();
+    // const filteredData = data.filter((item) => item.added);
     res.status(200).send(data);
   } catch (err) {
     console.log(err);

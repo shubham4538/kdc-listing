@@ -9,7 +9,7 @@ function Home() {
   const [showModal, setShowModal] = useState(false);
   const [products, setProducts] = useState([]);
   const [materials, setMaterials] = useState([]);
-  const [sortedProducts, setSortedProducts] = useState(productData);
+  const [sortedProducts, setSortedProducts] = useState([]);
   const [filterProducts, setFilterProducts] = useState("");
   const [filterMaterials, setFilterMaterials] = useState("");
   const [searchValue, setSearchValue] = useState("");
@@ -22,10 +22,10 @@ function Home() {
 
     setFilterProducts("");
     setFilterMaterials("");
-    axios
-      .get("https://kdc-listing.vercel.app/getdata")
-      .then((res) => setSortedProducts(res.data.filter((item) => item.added)));
-    setLoading(false);
+    axios.get("https://kdc-listing.vercel.app/getdata").then((res) => {
+      setSortedProducts(res.data.filter((item) => item.added));
+      setLoading(false);
+    });
   }, []);
 
   useEffect(() => {
@@ -40,8 +40,7 @@ function Home() {
   }, [filterProducts]);
 
   const searchFilter = () => {
-    console.log(productData);
-    const searchedProducts = productData.filter((item) =>
+    const searchedProducts = sortedProducts.filter((item) =>
       item.grade.toLowerCase().includes(searchValue)
     );
     setSortedProducts(searchedProducts);
@@ -50,14 +49,13 @@ function Home() {
   const sortBy = (type) => {
     let sortByProducts = [];
     if (type === "product") {
-      sortByProducts = [...productData].sort((a, b) =>
+      sortByProducts = [...sortedProducts].sort((a, b) =>
         a.grade.localeCompare(b.grade)
       );
     } else {
-      sortByProducts = [...productData].sort((a, b) => a.price - b.price);
+      sortByProducts = [...sortedProducts].sort((a, b) => a.price - b.price);
     }
     setSortedProducts(sortByProducts);
-    // do sort today
   };
 
   return loading ? (
