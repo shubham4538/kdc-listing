@@ -3,6 +3,7 @@ import axios from "axios";
 
 import productData from "../data/products_200_final.json";
 import AddProductModal from "../components/AddProductModal.jsx";
+import EditProduct from "../components/EditProduct.jsx";
 
 function Home() {
   const [showModal, setShowModal] = useState(false);
@@ -22,7 +23,7 @@ function Home() {
     setFilterProducts("");
     setFilterMaterials("");
     axios
-      .get("http://localhost:3001/getdata")
+      .get("https://kdc-listing.vercel.app/getdata")
       .then((res) => setSortedProducts(res.data.filter((item) => item.added)));
     setLoading(false);
   }, []);
@@ -183,7 +184,12 @@ function Home() {
               {sortedProducts.map((product, index) =>
                 editProduct == product._id ? (
                   <tr key={index}>
-                    <div>Hello</div>
+                    <td colSpan={4}>
+                      <EditProduct
+                        product={product}
+                        setEditProduct={setEditProduct}
+                      />
+                    </td>
                   </tr>
                 ) : (
                   <tr key={index} className="border">

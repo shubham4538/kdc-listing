@@ -3,6 +3,7 @@ const cors = require("cors");
 const app = express();
 require("dotenv").config();
 const connectDB = require("./connection.js");
+const { ObjectId } = require("mongodb");
 
 const port = process.env.PORT || 3001;
 
@@ -20,18 +21,20 @@ app.get("/getdata", async (req, res) => {
   }
 });
 
-app.put("/edit/:id", async (req, res) => {
+app.post("/edit/:id", async (req, res) => {
   const { id } = req.params;
-  console.log(req.data);
+  const product = req.body.data;
+  delete product._id;
 
   try {
     const db = await connectDB();
-    const data = `await db
+    const data = await db
       .collection("products")
-      .findOneAndUpdate({ _id: id }, {});`;
+      .findOneAndUpdate({ _id: new ObjectId(id) }, { $set: product });
+    console.log(data);
     res.status(200).send(data);
   } catch (err) {
-    console.log(data);
+    console.log(err);
     res.status(500).send({ error: "Something went wrong" });
   }
 });
